@@ -1,0 +1,113 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique @default(cuid())
+  title       String
+  subtitle    String?
+  description String
+  iconSvg     String?  @db.Text
+  imageUrl    String?
+  imagePublicId String?
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Portfolio {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   // Interview | Social Video | TVC | MV | Event | Campaign
+  description String?  @db.Text
+  images      String[] // Cloudinary URLs
+  imagePublicIds String[]
+  client      String?
+  year        Int?
+  link        String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("portfolios")
+}
+
+model TeamMember {
+  id              String   @id @default(cuid())
+  name            String
+  role            String
+  bio             String?  @db.Text
+  avatarUrl       String?
+  avatarPublicId  String?
+  order           Int      @default(0)
+  active          Boolean  @default(true)
+  socialFacebook  String?
+  socialInstagram String?
+  socialLinkedin  String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("team_members")
+}
+
+model Client {
+  id              String   @id @default(cuid())
+  name            String
+  logoUrl         String?
+  logoPublicId    String?
+  website         String?
+  year            Int?
+  order           Int      @default(0)
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("clients")
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  quote       String   @db.Text
+  authorName  String
+  company     String?
+  avatarUrl   String?
+  avatarPublicId String?
+  rating      Int      @default(5)
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model Settings {
+  id            String  @id @default(cuid())
+  key           String  @unique
+  value         String  @db.Text
+  description   String?
+
+  @@map("settings")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  service   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
